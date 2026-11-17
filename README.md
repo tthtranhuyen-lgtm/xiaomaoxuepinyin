@@ -7,7 +7,7 @@ Web học pinyin cho học sinh ôn luyện ở nhà: 23 thanh mẫu, 36 vận m
 | File | Nội dung |
 |---|---|
 | `index.html` | Toàn bộ giao diện và code (HTML, CSS, JavaScript) |
-| `audio.js` | Âm thanh của ~1.600 âm tiết × 4 thanh (không cần sửa) |
+| `audio.js` | Âm thanh của ~400 âm tiết × 4 thanh (không cần sửa) |
 
 ## Đưa lên GitHub Pages
 
@@ -22,5 +22,6 @@ Tải cả thư mục về rồi bấm đúp `index.html`. Hai file phải nằm
 
 ## Nguồn âm thanh
 
-- Giọng đọc chính: bộ [mp3-chinese-pinyin-sound](https://github.com/davinfifield/mp3-chinese-pinyin-sound) (public domain), đã lọc tiếng ù/tiếng xì, chỉnh lại cao độ các thanh chưa chuẩn và cân bằng âm lượng. Một số bản thu gốc đọc thiếu âm i (biao4, diao1, diao2, miao1, piao1, tiao1, tiao3, niao1, niao2, lia3 nghe thành bao, dao, mao…); các âm này được dựng lại từ chính giọng đọc đó ở thanh khác (giữ nguyên âm, chỉnh cao độ theo thanh đúng).
-- Âm `o` và `eng`: [audio-cmn / Shtooka](https://github.com/hugolpz/audio-cmn), giọng Chen Wang, giấy phép CC BY-SA.
+- Giọng đọc: bản thu âm `1117` (giọng nữ, mỗi âm tiết đọc đủ 4 thanh), đã cắt riêng từng thanh, bỏ tiếng ồn ở đuôi và cân bằng âm lượng. Tổng cộng 397 âm tiết thu âm × 4 thanh.
+- Bản thu không có `xi, qiu, xiu, keng, heng, chua, sei, den`; các âm này được ghép từ chính giọng đọc đó (phụ âm đầu của một âm + phần vần cùng thanh của âm khác, ví dụ xi = "x" của xin + "i" của qi).
+- Bản thu cũng không có `lo, nou, nun, rei, reng` (đều là âm hiếm) nên các âm này không có tiếng và tự ẩn khỏi bảng ghép vần.
