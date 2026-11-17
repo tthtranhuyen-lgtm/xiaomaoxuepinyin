@@ -214,7 +214,7 @@ footer{ text-align:center; color:var(--muted); font-size:13px; margin-top:34px; 
   </header>
   <nav class="tabs" role="tablist" id="tabs"></nav>
   <main id="view"></main>
-  <footer>Âm thanh: giọng đọc từ bộ “mp3-chinese-pinyin-sound” (public domain), đã lọc tiếng ù và tiếng xì, chỉnh lại các thanh chưa chuẩn, tăng độ rõ phụ âm và cân bằng âm lượng. Âm o và eng lấy từ Shtooka/audio-cmn (CC BY-SA).</footer>
+  <footer>Âm thanh: giọng đọc từ bộ “mp3-chinese-pinyin-sound” (public domain), đã lọc tiếng ù và tiếng xì, chỉnh lại các thanh chưa chuẩn, sửa các âm thiếu i (như biao, tiao, miao) và cân bằng âm lượng. Âm o và eng lấy từ Shtooka/audio-cmn (CC BY-SA).</footer>
 </div>
 
 <div class="pop" id="pop" hidden role="dialog" aria-label="Bốn thanh điệu">
@@ -240,9 +240,11 @@ const INITIALS = [
 ];
 const FINALS = [
   {name:"Vận mẫu đơn", tint:1, items:[["a","a"],["o","o"],["e","e"],["i","yi"],["u","wu"],["ü","yu"]]},
-  {name:"Vận mẫu kép", tint:2, items:[["ai","ai"],["ei","ei"],["ui","wei"],["ao","ao"],["ou","ou"],["iu","you"],["ie","ye"],["üe","yue"],["er","er"]]},
-  {name:"Vận mẫu mũi trước", tint:3, items:[["an","an"],["en","en"],["in","yin"],["un","wen"],["ün","yun"]]},
-  {name:"Vận mẫu mũi sau", tint:4, items:[["ang","ang"],["eng","eng"],["ing","ying"],["ong","hong"]]}
+  {name:"Vận mẫu kép", tint:2, items:[["ai","ai"],["ei","ei"],["ao","ao"],["ou","ou"],["er","er"]]},
+  {name:"Vận mẫu mũi", tint:3, items:[["an","an"],["en","en"],["ang","ang"],["eng","eng"],["ong","hong"]]},
+  {name:"Nhóm i (đứng một mình viết bằng y)", tint:4, items:[["ia","ya"],["ie","ye"],["iao","yao"],["iu","you"],["ian","yan"],["in","yin"],["iang","yang"],["ing","ying"],["iong","yong"]]},
+  {name:"Nhóm u (đứng một mình viết bằng w)", tint:5, items:[["ua","wa"],["uo","wo"],["uai","wai"],["ui","wei"],["uan","wan"],["un","wen"],["uang","wang"],["ueng","weng"]]},
+  {name:"Nhóm ü (đứng một mình viết bằng yu)", tint:6, items:[["üe","yue"],["üan","yuan"],["ün","yun"]]}
 ];
 const WHOLE = [
   {name:"Đọc nguyên cả âm, không đánh vần", tint:5, items:["zhi","chi","shi","ri","zi","ci","si","yi","wu","yu","ye","yue","yuan","yin","yun","ying"].map(s=>[s,s])}
@@ -276,7 +278,7 @@ const CH_FIN = [
 ];
 const ZERO = {i:"yi",u:"wu","ü":"yu",ia:"ya",ie:"ye",iao:"yao",iu:"you",ian:"yan","in":"yin",iang:"yang",ing:"ying",iong:"yong",
   ua:"wa",uo:"wo",uai:"wai",ui:"wei",uan:"wan",un:"wen",uang:"wang",ueng:"weng","üe":"yue","üan":"yuan","ün":"yun"};
-const BAD = new Set(["lo","dia","den","nou","rei","kei","sei","nun","nia","cei","zhei"]);
+const BAD = new Set(["dia","rei","kei","nia","cei"]);
 function join(ini, fin){
   if(!ini) return ZERO[fin] || fin;
   if(fin==="er" || fin==="ueng") return null;
@@ -545,7 +547,7 @@ function render(){
   $("#tabs").innerHTML = TABS.map(([id,l])=>`<button role="tab" aria-selected="${id===tab}" data-tab="${id}">${l}</button>`).join("");
   const v = $("#view");
   if(tab==="thanh-mau") v.innerHTML = tableView("23 thanh mẫu", "Bấm vào chữ để nghe cách đọc, rồi chọn từng thanh để luyện. Chữ nhỏ bên dưới là cách thầy cô hay đọc.", INITIALS, true);
-  else if(tab==="van-mau") v.innerHTML = tableView("24 vận mẫu", "Học 6 vận mẫu đơn trước rồi mới sang vần kép. Bấm vào vần để nghe và luyện 4 thanh.", FINALS, false);
+  else if(tab==="van-mau") v.innerHTML = tableView("36 vận mẫu", "Học 6 vận mẫu đơn trước, rồi đến vần kép, vần mũi và ba nhóm i, u, ü. Chữ nhỏ bên dưới là cách viết khi vần đứng một mình (không có thanh mẫu). Riêng ong không đứng một mình nên mèo đọc mẫu bằng hong.", FINALS, true);
   else if(tab==="chinh-the") v.innerHTML = tableView("16 âm tiết chỉnh thể", "Các âm này đọc luôn cả âm, không đánh vần ghép.", WHOLE, false);
   else if(tab==="bang-ghep") v.innerHTML = chartView();
   else if(tab==="thanh-dieu") v.innerHTML = tonesView();

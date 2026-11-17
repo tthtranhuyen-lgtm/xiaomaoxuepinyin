@@ -1,6 +1,6 @@
 # 🐱 Mèo học Pinyin
 
-Web học pinyin cho học sinh ôn luyện ở nhà: thanh mẫu, vận mẫu, âm tiết chỉnh thể, bảng ghép vần, 4 thanh điệu, ghép vần và luyện nghe. Giọng đọc là bản thu âm người thật, chạy được cả khi không có mạng.
+Web học pinyin cho học sinh ôn luyện ở nhà: 23 thanh mẫu, 36 vận mẫu (gồm đủ nhóm i, u, ü), âm tiết chỉnh thể, bảng ghép vần, 4 thanh điệu, ghép vần và luyện nghe. Giọng đọc là bản thu âm người thật, chạy được cả khi không có mạng.
 
 ## Cấu trúc
 
@@ -22,5 +22,5 @@ Tải cả thư mục về rồi bấm đúp `index.html`. Hai file phải nằm
 
 ## Nguồn âm thanh
 
-- Giọng đọc chính: bộ [mp3-chinese-pinyin-sound](https://github.com/davinfifield/mp3-chinese-pinyin-sound) (public domain), đã lọc tiếng ù/tiếng xì, chỉnh lại cao độ các thanh chưa chuẩn, rồi xử lý thêm cho rõ: làm nổi phụ âm (s, x, sh, q, c…), giảm tiếng ồn nền, cắt khoảng lặng thừa và cân bằng âm lượng giữa các âm.
+- Giọng đọc chính: bộ [mp3-chinese-pinyin-sound](https://github.com/davinfifield/mp3-chinese-pinyin-sound) (public domain), đã lọc tiếng ù/tiếng xì, chỉnh lại cao độ các thanh chưa chuẩn và cân bằng âm lượng. Một số bản thu gốc đọc thiếu âm i (biao4, diao1, diao2, miao1, piao1, tiao1, tiao3, niao1, niao2, lia3 nghe thành bao, dao, mao…); các âm này được dựng lại từ chính giọng đọc đó ở thanh khác (giữ nguyên âm, chỉnh cao độ theo thanh đúng).
 - Âm `o` và `eng`: [audio-cmn / Shtooka](https://github.com/hugolpz/audio-cmn), giọng Chen Wang, giấy phép CC BY-SA.
