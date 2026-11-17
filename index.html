@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mèo học Pinyin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#E4F3EF; --bg2:#CFE9E3; --surface:#FFFFFF; --ink:#23314A; --muted:#5A6880;
+  --line:#B9D9D1; --grid:#DCEBE7; --cat:#FF9F43; --cat-deep:#D9761A; --cat-soft:#FFE3C4; --play:#4C7BE8;
+  --t1:#2471D6; --t2:#18904F; --t3:#C47A00; --t4:#D63650;
+  --ok:#18904F; --ok-bg:#D4F2E0; --bad:#D63650; --bad-bg:#FBDDE2;
+  --c1:#FFE0E8; --c1d:#F2A9BC; --c2:#FFF0C2; --c2d:#EBC85E; --c3:#D5ECFF; --c3d:#8DBFEA;
+  --c4:#DBF5D3; --c4d:#93CF81; --c5:#E9E0FF; --c5d:#B3A0EA; --c6:#FFE1CF; --c6d:#EFA37A; --c7:#D3F3F3; --c7d:#7FCACA;
+  --font: "Baloo 2", "Segoe UI", system-ui, sans-serif;
+  --py: "Andika", "Segoe UI", "Noto Sans", "Arial Unicode MS", sans-serif;
+  --han: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#14212A; --bg2:#1B2C37; --surface:#20323F; --ink:#EAF2F5; --muted:#A5B6C3;
+    --line:#2F4757; --grid:#2A3F4D; --cat:#FFAE5E; --cat-deep:#E88A2E; --cat-soft:#4A3420; --play:#86A8FF;
+    --t1:#7FB5FF; --t2:#5BD490; --t3:#FFC54F; --t4:#FF8193;
+    --ok:#5BD490; --ok-bg:#1D4030; --bad:#FF8193; --bad-bg:#4A2430;
+    --c1:#43293A; --c1d:#7A4766; --c2:#423A22; --c2d:#7D6A2D; --c3:#213A50; --c3d:#3E6A90;
+    --c4:#25402A; --c4d:#467A4C; --c5:#332C4D; --c5d:#5E5191; --c6:#45301F; --c6d:#86573A; --c7:#1E4244; --c7d:#3C7C7E;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#14212A; --bg2:#1B2C37; --surface:#20323F; --ink:#EAF2F5; --muted:#A5B6C3;
+  --line:#2F4757; --grid:#2A3F4D; --cat:#FFAE5E; --cat-deep:#E88A2E; --cat-soft:#4A3420; --play:#86A8FF;
+  --t1:#7FB5FF; --t2:#5BD490; --t3:#FFC54F; --t4:#FF8193;
+  --ok:#5BD490; --ok-bg:#1D4030; --bad:#FF8193; --bad-bg:#4A2430;
+  --c1:#43293A; --c1d:#7A4766; --c2:#423A22; --c2d:#7D6A2D; --c3:#213A50; --c3d:#3E6A90;
+  --c4:#25402A; --c4d:#467A4C; --c5:#332C4D; --c5d:#5E5191; --c6:#45301F; --c6d:#86573A; --c7:#1E4244; --c7d:#3C7C7E;
+}
+:root{ box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); }
+html{ scroll-padding-top:env(safe-area-inset-top,0px); -webkit-tap-highlight-color:transparent; }
+*,*::before,*::after{ box-sizing:inherit; }
+body{
+  margin:0; font-family:var(--font); color:var(--ink); background:var(--bg);
+  background-image: radial-gradient(var(--bg2) 1.6px, transparent 1.7px); background-size:26px 26px;
+  min-height:100vh; line-height:1.5; font-size:17px;
+}
+button{ font:inherit; color:inherit; touch-action:manipulation; }
+:focus-visible{ outline:3px solid var(--cat); outline-offset:3px; border-radius:14px; }
+.wrap{ max-width:1100px; margin:0 auto; padding:18px 18px 60px; }
+.py, .pyt{ font-family:var(--py); line-height:1.3; }
+
+header.top{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.brand{ display:flex; align-items:center; gap:10px; margin-right:auto; }
+.brand svg{ width:54px; height:54px; flex:none; }
+.brand h1{ font-size:30px; line-height:1; margin:0; font-weight:800; letter-spacing:-.5px; }
+.brand p{ margin:2px 0 0; color:var(--muted); font-size:15px; }
+.speed{ display:flex; align-items:center; gap:4px; background:var(--surface); border:2px solid var(--line); border-radius:16px; padding:4px; }
+.speed span{ font-size:14px; color:var(--muted); padding:0 6px; }
+.speed button{ border:0; background:transparent; border-radius:12px; padding:3px 12px; font-weight:700; font-size:15px; }
+.speed button[aria-pressed="true"]{ background:var(--cat); color:#3A1E00; }
+
+nav.tabs{ display:flex; gap:8px; margin:22px 0 18px; overflow-x:auto; padding:4px 2px 8px; scrollbar-width:thin; }
+nav.tabs button{ flex:none; border:2px solid var(--line); background:var(--surface); border-radius:999px; padding:6px 16px; font-weight:700; font-size:16px; white-space:nowrap; }
+nav.tabs button[aria-selected="true"]{ background:var(--cat); border-color:var(--cat-deep); color:#3A1E00; }
+
+.intro{ display:flex; align-items:center; gap:14px; margin:4px 0 16px; flex-wrap:wrap; }
+.intro h2{ margin:0; font-size:26px; font-weight:800; }
+.intro p{ margin:0; color:var(--muted); flex:1 1 280px; }
+.playall{ border:0; background:var(--ink); color:var(--surface); font-weight:700; border-radius:14px; padding:6px 16px; }
+.playall.stop{ background:var(--bad); color:#fff; }
+.group{ margin:0 0 20px; }
+.group h3{ margin:0 0 8px; font-size:17px; font-weight:700; color:var(--muted); display:flex; align-items:center; gap:8px; }
+.group h3 i{ width:14px; height:14px; border-radius:5px; background:var(--tint); border:2px solid var(--tintd); display:inline-block; }
+
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:12px; }
+.key{
+  position:relative; border:2px solid var(--tintd); background:var(--tint); border-radius:22px;
+  padding:10px 6px 8px; text-align:center; box-shadow:0 5px 0 var(--tintd);
+  transition:transform .06s, box-shadow .06s; min-height:100px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0;
+}
+.key:active{ transform:translateY(4px); box-shadow:0 1px 0 var(--tintd); }
+.key .py{ font-size:42px; font-weight:700; }
+.key .sub{ font-family:var(--py); font-size:15px; color:var(--muted); line-height:1.2; }
+.key .han{ font-family:var(--han); font-size:16px; color:var(--muted); }
+.key::before,.key::after{
+  content:""; position:absolute; top:-14px; width:0; height:0;
+  border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:18px solid var(--cat);
+  opacity:0; transform:translateY(10px) scale(.4); transition:opacity .12s, transform .18s cubic-bezier(.3,1.6,.5,1); pointer-events:none;
+}
+.key::before{ left:18%; } .key::after{ right:18%; }
+.key.playing, .key.sel{ border-color:var(--cat-deep); box-shadow:0 5px 0 var(--cat-deep), 0 0 0 4px var(--cat-soft); }
+.key.playing::before,.key.playing::after{ opacity:1; transform:translateY(0) scale(1); }
+.t1{ color:var(--t1); } .t2{ color:var(--t2); } .t3{ color:var(--t3); } .t4{ color:var(--t4); }
+
+/* Syllable chart */
+.chartwrap{ overflow:auto; max-height:76vh; background:var(--surface); border:2px solid var(--line); border-radius:20px; }
+table.chart{ border-collapse:separate; border-spacing:0; font-family:var(--py); }
+.chart th,.chart td{ border-right:1px solid var(--grid); border-bottom:1px solid var(--grid); padding:0; text-align:center; }
+.chart thead th{ position:sticky; top:0; z-index:2; background:var(--bg2); font-size:18px; font-weight:700; min-width:64px; height:40px; }
+.chart tbody th{ position:sticky; left:0; z-index:1; background:var(--bg2); font-size:18px; font-weight:700; min-width:58px; padding:0 6px; }
+.chart thead th:first-child{ left:0; z-index:3; font-family:var(--font); font-size:13px; color:var(--muted); }
+.chart tr.gap th, .chart tr.gap td{ border-top:3px solid var(--line); }
+.chart td button{ width:100%; min-width:64px; height:42px; border:0; background:transparent; font-family:var(--py); font-size:18px; padding:0 6px; }
+.chart td button:hover{ background:var(--cat-soft); }
+.chart td button.sel{ background:var(--cat); color:#3A1E00; font-weight:700; }
+.chart td button.playing{ background:var(--cat); color:#3A1E00; }
+
+/* Popup (like the reference) */
+.pop{
+  position:absolute; z-index:40; width:min(440px, calc(100vw - 24px)); background:var(--surface);
+  border:2px solid var(--line); border-radius:22px; padding:12px 14px 14px; box-shadow:0 14px 40px rgba(20,40,60,.22);
+}
+.pop[hidden]{ display:none; }
+.pop.sheet{ position:fixed; left:12px !important; right:12px; width:auto; top:auto !important; bottom:calc(12px + env(safe-area-inset-bottom,0px)); }
+.pop .ph{ display:flex; align-items:baseline; gap:14px; }
+.pop .pbig{ font-family:var(--py); font-size:30px; font-weight:700; }
+.pop .pform{ font-family:var(--py); color:var(--muted); font-size:19px; }
+.pop .pnote{ font-size:14px; color:var(--muted); margin:2px 0 0; }
+.pop .x{ margin-left:auto; border:0; background:transparent; width:40px; height:40px; border-radius:50%; font-size:26px; line-height:1; align-self:center; }
+.pop .x:hover{ background:var(--bg2); }
+.tones4{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:10px; }
+.tbtn{ border:2px solid transparent; background:var(--bg); border-radius:16px; padding:8px 4px; display:flex; align-items:center; justify-content:center; gap:6px; }
+.tbtn .pyt{ font-size:26px; font-weight:700; }
+.tbtn svg{ width:24px; height:24px; flex:none; color:var(--play); }
+.tbtn.playing{ border-color:var(--cat); background:var(--cat-soft); }
+.tbtn[disabled]{ opacity:.35; }
+.pop .pall{ margin-top:10px; width:100%; border:0; border-radius:14px; padding:6px; font-weight:700; background:var(--ink); color:var(--surface); }
+
+/* Tones tab */
+.legend{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:22px; }
+.legend .tone{ background:var(--surface); border:2px solid var(--line); border-radius:20px; padding:12px 14px; display:flex; gap:12px; align-items:center; }
+.legend svg{ width:64px; height:52px; flex:none; }
+.legend b{ display:block; font-size:18px; }
+.legend span{ font-size:14px; color:var(--muted); line-height:1.35; display:block; }
+.trow{ display:grid; grid-template-columns:76px repeat(4,minmax(0,1fr)) auto; gap:10px; align-items:center; margin-bottom:14px; }
+.trow .lab{ font-family:var(--py); font-size:24px; font-weight:700; color:var(--muted); }
+.trow .key{ min-height:92px; }
+.trow .key .py{ font-size:32px; }
+.trow .all{ border:2px solid var(--line); background:var(--surface); border-radius:16px; padding:6px 10px; font-weight:700; font-size:14px; line-height:1.2; }
+@media (max-width:640px){
+  .trow{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .trow .lab{ grid-column:1 / 3; order:-2; }
+  .trow .all{ grid-column:3 / 5; justify-self:end; order:-1; }
+}
+
+/* Spell */
+.spells{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
+.spell{ border:2px solid var(--line); background:var(--surface); border-radius:22px; padding:10px 12px; display:flex; align-items:center; gap:8px; box-shadow:0 5px 0 var(--line); text-align:left; }
+.spell:active{ transform:translateY(4px); box-shadow:0 1px 0 var(--line); }
+.spell .p{ font-family:var(--py); min-width:44px; text-align:center; font-size:23px; font-weight:700; padding:2px 8px; border-radius:12px; background:var(--c3); transition:background .12s, transform .12s; }
+.spell .p.f{ background:var(--c1); }
+.spell .op{ color:var(--muted); font-weight:700; }
+.spell .res{ margin-left:auto; text-align:right; line-height:1.1; border-radius:12px; padding:2px 6px; transition:background .12s; }
+.spell .res .py{ font-size:26px; font-weight:700; display:block; }
+.spell .res small{ font-size:14px; color:var(--muted); }
+.spell .res small b{ font-family:var(--han); color:var(--ink); font-weight:600; font-size:17px; }
+.spell .on{ background:var(--cat) !important; color:#3A1E00; transform:scale(1.1); }
+.spell .on small, .spell .on small b{ color:#3A1E00; }
+.note{ background:var(--surface); border:2px dashed var(--line); border-radius:18px; padding:10px 14px; margin:0 0 16px; font-size:15px; color:var(--muted); }
+
+/* Quiz */
+.quiz{ background:var(--surface); border:2px solid var(--line); border-radius:28px; padding:22px; max-width:640px; margin:0 auto; text-align:center; }
+.modes{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; }
+.mode{ border:2px solid var(--tintd); background:var(--tint); border-radius:22px; padding:16px 10px; box-shadow:0 5px 0 var(--tintd); }
+.mode b{ font-size:20px; display:block; }
+.mode span{ font-size:14px; color:var(--muted); }
+.mode:active{ transform:translateY(4px); box-shadow:0 1px 0 var(--tintd); }
+.qtop{ display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-weight:700; }
+.dots{ display:flex; gap:5px; }
+.dots i{ width:12px; height:12px; border-radius:50%; background:var(--bg2); display:block; }
+.dots i.ok{ background:var(--ok); } .dots i.bad{ background:var(--bad); } .dots i.now{ background:var(--cat); }
+.listen{ width:150px; height:150px; border-radius:50%; border:0; margin:18px auto 6px; display:grid; place-items:center; background:var(--cat-soft); box-shadow:0 0 0 6px var(--surface), 0 0 0 9px var(--cat); }
+.listen svg{ width:110px; height:110px; }
+.listen.playing svg{ animation:bob .4s ease-in-out infinite alternate; }
+@keyframes bob{ from{ transform:translateY(0) rotate(-3deg);} to{ transform:translateY(-6px) rotate(3deg);} }
+.hint{ color:var(--muted); margin:0 0 14px; }
+.opts{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.opt{ --tint:var(--c3); --tintd:var(--c3d); min-height:84px; }
+.opt.right{ --tint:var(--ok-bg); --tintd:var(--ok); }
+.opt.wrong{ --tint:var(--bad-bg); --tintd:var(--bad); }
+.feedback{ min-height:34px; margin:14px 0 4px; font-size:20px; font-weight:800; }
+.feedback.ok{ color:var(--ok); } .feedback.bad{ color:var(--bad); }
+.next{ border:0; background:var(--ink); color:var(--surface); border-radius:16px; padding:10px 26px; font-weight:800; font-size:18px; }
+.stars{ font-size:40px; letter-spacing:4px; margin:6px 0; }
+.end h2{ margin:4px 0; font-size:28px; }
+.end p{ color:var(--muted); margin:0 0 14px; }
+.end .btns{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.end .btns button{ border:0; border-radius:16px; padding:10px 20px; font-weight:800; font-size:17px; background:var(--cat); color:#3A1E00; box-shadow:0 4px 0 var(--cat-deep); }
+.end .btns button.alt{ background:var(--bg2); color:var(--ink); box-shadow:0 4px 0 var(--line); }
+
+footer{ text-align:center; color:var(--muted); font-size:13px; margin-top:34px; }
+.paw{ position:fixed; pointer-events:none; z-index:50; width:18px; height:18px; margin:-9px 0 0 -9px; opacity:.5; animation:pawfade .9s forwards; color:var(--cat-deep); }
+@keyframes pawfade{ to{ opacity:0; transform:scale(.6); } }
+@media (prefers-reduced-motion: reduce){ .listen.playing svg{ animation:none; } .key::before,.key::after{ transition:none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span id="logo"></span>
+      <div><h1>Mèo học Pinyin</h1><p>Bấm vào âm để nghe, rồi đọc theo thật to nhé!</p></div>
+    </div>
+    <div class="speed" role="group" aria-label="Tốc độ đọc">
+      <span>Tốc độ</span>
+      <button data-rate="1" aria-pressed="true">Vừa</button>
+      <button data-rate="0.75" aria-pressed="false">Chậm</button>
+    </div>
+  </header>
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+  <main id="view"></main>
+  <footer>Âm thanh: giọng đọc từ bộ “mp3-chinese-pinyin-sound” (public domain), đã lọc tiếng ù và tiếng xì, chỉnh lại các thanh chưa chuẩn, tăng độ rõ phụ âm và cân bằng âm lượng. Âm o và eng lấy từ Shtooka/audio-cmn (CC BY-SA).</footer>
+</div>
+
+<div class="pop" id="pop" hidden role="dialog" aria-label="Bốn thanh điệu">
+  <div class="ph"><span class="pbig" id="pBig"></span><span class="pform" id="pForm"></span><button class="x" id="pX" aria-label="Đóng">×</button></div>
+  <p class="pnote" id="pNote"></p>
+  <div class="tones4" id="pTones"></div>
+  <button class="pall" id="pAll">Đọc cả 4 thanh</button>
+</div>
+
+<script src="audio.js"></script>
+<script>
+/* ---------- Data ---------- */
+const AUD = window.PINYIN_AUDIO || {};
+// [hiển thị, âm đọc (không dấu, dùng để phát), chú thích]
+const INITIALS = [
+  {name:"Âm môi", tint:1, items:[["b","bo"],["p","po"],["m","mo"],["f","fo"]]},
+  {name:"Âm đầu lưỡi", tint:2, items:[["d","de"],["t","te"],["n","ne"],["l","le"]]},
+  {name:"Âm cuống lưỡi", tint:3, items:[["g","ge"],["k","ke"],["h","he"]]},
+  {name:"Âm mặt lưỡi", tint:4, items:[["j","ji"],["q","qi"],["x","xi"]]},
+  {name:"Âm uốn lưỡi", tint:5, items:[["zh","zhi"],["ch","chi"],["sh","shi"],["r","ri"]]},
+  {name:"Âm đầu lưỡi trước", tint:6, items:[["z","zi"],["c","ci"],["s","si"]]},
+  {name:"Bán nguyên âm", tint:7, items:[["y","yi"],["w","wu"]]}
+];
+const FINALS = [
+  {name:"Vận mẫu đơn", tint:1, items:[["a","a"],["o","o"],["e","e"],["i","yi"],["u","wu"],["ü","yu"]]},
+  {name:"Vận mẫu kép", tint:2, items:[["ai","ai"],["ei","ei"],["ui","wei"],["ao","ao"],["ou","ou"],["iu","you"],["ie","ye"],["üe","yue"],["er","er"]]},
+  {name:"Vận mẫu mũi trước", tint:3, items:[["an","an"],["en","en"],["in","yin"],["un","wen"],["ün","yun"]]},
+  {name:"Vận mẫu mũi sau", tint:4, items:[["ang","ang"],["eng","eng"],["ing","ying"],["ong","hong"]]}
+];
+const WHOLE = [
+  {name:"Đọc nguyên cả âm, không đánh vần", tint:5, items:["zhi","chi","shi","ri","zi","ci","si","yi","wu","yu","ye","yue","yuan","yin","yun","ying"].map(s=>[s,s])}
+];
+const TONES = [
+  ["ma","妈麻马骂"],["ba","八拔把爸"],["da","搭达打大"],["yi","衣姨椅意"],["wu","乌无五物"],["yu","迂鱼雨玉"],
+  ["ge","哥格葛个"],["ji","鸡急挤记"],["qi","七骑起气"],["shi","诗十史是"],["tu","秃图土兔"],["zhu","猪竹主住"],
+  ["mao","猫毛卯帽"],["tang","汤糖躺烫"],["fang","方房访放"],["yang","央羊养样"]
+];
+const SPELL = [
+  ["b","a","bā","八","số tám"],["m","a","mā","妈","mẹ"],["p","a","pá","爬","leo, bò"],["d","a","dà","大","to"],
+  ["t","a","tā","他","anh ấy"],["n","a","ná","拿","cầm"],["l","a","lā","拉","kéo"],["g","e","gē","哥","anh trai"],
+  ["k","e","kě","渴","khát"],["h","e","hé","河","sông"],["j","i","jī","鸡","con gà"],["q","i","qī","七","số bảy"],
+  ["x","i","xī","西","phía tây"],["zh","u","zhū","猪","con lợn"],["ch","e","chē","车","xe"],["sh","u","shū","书","sách"],
+  ["r","ou","ròu","肉","thịt"],["z","u","zū","租","thuê"],["c","ai","cài","菜","rau"],["s","an","sān","三","số ba"],
+  ["b","ao","bāo","包","cái túi"],["m","ao","māo","猫","con mèo"],["g","ou","gǒu","狗","con chó"],["n","iu","niú","牛","con bò"],
+  ["x","ie","xié","鞋","giày"],["f","ei","fēi","飞","bay"],["sh","ui","shuǐ","水","nước"],["x","ing","xīng","星","ngôi sao"],
+  ["t","ang","tāng","汤","canh"],["h","ao","hǎo","好","tốt"],["l","ü","lǜ","绿","xanh lá"],["j","ü","jú","菊","hoa cúc"]
+];
+const READ = {};
+[...INITIALS,...FINALS].forEach(g=>g.items.forEach(([p,r])=>{ READ[p]=r; }));
+
+/* Syllable chart */
+const CH_INI = ["","b","p","m","f","d","t","n","l","g","k","h","j","q","x","zh","ch","sh","r","z","c","s"];
+const CH_FIN = [
+  ["a","o","e","i","u","ü","er"],
+  ["ai","ei","ao","ou","an","en","ang","eng","ong"],
+  ["ia","ie","iao","iu","ian","in","iang","ing","iong"],
+  ["ua","uo","uai","ui","uan","un","uang","ueng"],
+  ["üe","üan","ün"]
+];
+const ZERO = {i:"yi",u:"wu","ü":"yu",ia:"ya",ie:"ye",iao:"yao",iu:"you",ian:"yan","in":"yin",iang:"yang",ing:"ying",iong:"yong",
+  ua:"wa",uo:"wo",uai:"wai",ui:"wei",uan:"wan",un:"wen",uang:"wang",ueng:"weng","üe":"yue","üan":"yuan","ün":"yun"};
+const BAD = new Set(["lo","dia","den","nou","rei","kei","sei","nun","nia","cei","zhei"]);
+function join(ini, fin){
+  if(!ini) return ZERO[fin] || fin;
+  if(fin==="er" || fin==="ueng") return null;
+  if(fin[0]==="ü"){ if("jqx".includes(ini)) return "u"+fin.slice(1); if(ini==="n"||ini==="l") return ini+fin; return null; }
+  return ini+fin;
+}
+const keyOf = s => s.replace(/ü/g,"v");
+const has = s => s && [1,2,3,4].some(t=>AUD[keyOf(s)+t]);
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const rand = a => a[Math.floor(Math.random()*a.length)];
+const shuffle = a => { a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const tint = n => `--tint:var(--c${n});--tintd:var(--c${n}d)`;
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+const MARKS = {a:"āáǎà",e:"ēéěè",i:"īíǐì",o:"ōóǒò",u:"ūúǔù","ü":"ǖǘǚǜ"};
+function mark(s, t){
+  let idx;
+  if(s.includes("a")) idx = s.indexOf("a");
+  else if(s.includes("e")) idx = s.indexOf("e");
+  else if(s.includes("ou")) idx = s.indexOf("o");
+  else { for(let i=s.length-1;i>=0;i--) if("ioeuü".includes(s[i])){ idx=i; break; } }
+  if(idx===undefined) return s;
+  return s.slice(0,idx) + MARKS[s[idx]][t-1] + s.slice(idx+1);
+}
+function unmark(p){
+  let tone = 0, base = "";
+  for(const ch of p){
+    let hit = false;
+    for(const v in MARKS){ const k = MARKS[v].indexOf(ch); if(k>=0){ tone=k+1; base+=v; hit=true; break; } }
+    if(!hit) base += ch;
+  }
+  return { base, tone, key: keyOf(base)+tone };
+}
+
+/* ---------- Cat drawings ---------- */
+function catSVG({size=40, mood="normal", body="#FF9F43", line="#5A3200", inner="#FFB7C5"}={}){
+  let eyes;
+  if(mood==="happy") eyes = `<path d="M11.5 23.5q2.5-3.5 5 0M23.5 23.5q2.5-3.5 5 0" fill="none" stroke="${line}" stroke-width="1.8" stroke-linecap="round"/>`;
+  else if(mood==="sad") eyes = `<path d="M11.5 21.5l5 1.6M28.5 21.5l-5 1.6" stroke="${line}" stroke-width="1.8" stroke-linecap="round"/><circle cx="14" cy="24.6" r="1.6" fill="${line}"/><circle cx="26" cy="24.6" r="1.6" fill="${line}"/>`;
+  else eyes = `<ellipse cx="14" cy="22.5" rx="2.1" ry="2.9" fill="${line}"/><ellipse cx="26" cy="22.5" rx="2.1" ry="2.9" fill="${line}"/><circle cx="14.7" cy="21.4" r=".8" fill="#fff"/><circle cx="26.7" cy="21.4" r=".8" fill="#fff"/>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 40 40"><path d="M5.5 3.5L17 12.5L8 19Z" fill="${body}" stroke="${line}" stroke-width="1.6" stroke-linejoin="round"/><path d="M34.5 3.5L23 12.5L32 19Z" fill="${body}" stroke="${line}" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 7.5L13.5 12L9.5 15Z M32 7.5L26.5 12L30.5 15Z" fill="${inner}"/><ellipse cx="20" cy="24" rx="14.5" ry="12" fill="${body}" stroke="${line}" stroke-width="1.6"/><path d="M17 14.5q3 2 6 0" fill="none" stroke="${line}" stroke-width="1.2" stroke-linecap="round" opacity=".55"/>${eyes}<circle cx="10.5" cy="28" r="2.4" fill="${inner}" opacity=".8"/><circle cx="29.5" cy="28" r="2.4" fill="${inner}" opacity=".8"/><path d="M18.6 26.6h2.8l-1.4 1.7Z" fill="#F07A93"/><path d="M20 28.3q-1 1.9-3 1.1M20 28.3q1 1.9 3 1.1" fill="none" stroke="${line}" stroke-width="1.3" stroke-linecap="round"/><path d="M2.5 25.5l6.5.8M3 30l6.2-1.6M37.5 25.5l-6.5.8M37 30l-6.2-1.6" stroke="${line}" stroke-width="1.1" stroke-linecap="round"/></svg>`;
+}
+$("#logo").innerHTML = catSVG({size:54, mood:"happy"});
+(function(){
+  const enc = s => "url(\"data:image/svg+xml," + encodeURIComponent(s) + "\") 6 4";
+  const st = document.createElement("style");
+  st.textContent = `html,body{cursor:${enc(catSVG({size:40}))},auto;}
+  button,select,input,a,[role=tab]{cursor:${enc(catSVG({size:40,mood:"happy",body:"#FFC36B"}))},pointer;}`;
+  document.head.appendChild(st);
+})();
+(function(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let lx=0, ly=0, lt=0, left=false;
+  const paw = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><ellipse cx="12" cy="16" rx="5.2" ry="4.4"/><circle cx="5.5" cy="10" r="2.3"/><circle cx="9.5" cy="5.8" r="2.3"/><circle cx="14.5" cy="5.8" r="2.3"/><circle cx="18.5" cy="10" r="2.3"/></svg>`;
+  addEventListener("pointermove", e=>{
+    if(e.pointerType!=="mouse") return;
+    const now = performance.now(), dx=e.clientX-lx, dy=e.clientY-ly;
+    if(now-lt<80 || dx*dx+dy*dy<900) return;
+    lt=now; lx=e.clientX; ly=e.clientY; left=!left;
+    const ang = Math.atan2(dy,dx)*180/Math.PI + 90, rad=ang*Math.PI/180, off=left?-7:7;
+    const d = document.createElement("div");
+    d.className="paw"; d.innerHTML=paw;
+    d.style.left=(e.clientX+18+Math.cos(rad)*off)+"px"; d.style.top=(e.clientY+26+Math.sin(rad)*off)+"px";
+    d.style.rotate = ang+"deg";
+    document.body.appendChild(d); setTimeout(()=>d.remove(), 950);
+  }, {passive:true});
+})();
+
+/* ---------- Audio (recorded human voice) ---------- */
+const P = { el:new Audio(), rate:parseFloat(store("py-rate2")) || 1, token:0, done:null, urls:{} };
+P.el.preload = "auto";
+function urlOf(key){
+  if(P.urls[key]) return P.urls[key];
+  const b = atob(AUD[key]), u = new Uint8Array(b.length);
+  for(let i=0;i<b.length;i++) u[i]=b.charCodeAt(i);
+  return P.urls[key] = URL.createObjectURL(new Blob([u], {type:"audio/mpeg"}));
+}
+function clearPlaying(){ document.querySelectorAll(".playing").forEach(x=>x.classList.remove("playing")); }
+function playOne(key, el){
+  return new Promise(res=>{
+    if(P.done) P.done();
+    if(!AUD[key]) return res();
+    const a = P.el;
+    let fin = false;
+    const finish = ()=>{ if(fin) return; fin=true; if(P.done===finish) P.done=null; el && el.classList.remove("playing"); a.onended=null; res(); };
+    P.done = finish;
+    a.onended = finish; a.onerror = finish;
+    a.src = urlOf(key);
+    a.defaultPlaybackRate = P.rate; a.playbackRate = P.rate;
+    a.preservesPitch = true; a.webkitPreservesPitch = true;
+    el && el.classList.add("playing");
+    const pr = a.play(); if(pr) pr.catch(finish);
+    setTimeout(finish, 4000);
+  });
+}
+function play(key, el){ P.token++; clearPlaying(); setPlayAll(false); return playOne(key, el); }
+async function playSeq(list, gap=300){
+  const t = ++P.token; clearPlaying();
+  for(const [key, el, onStart] of list){
+    if(t!==P.token) return false;
+    onStart && onStart();
+    await playOne(key, el);
+    if(t!==P.token) return false;
+    await wait(gap);
+  }
+  return t===P.token;
+}
+function stopAll(){ P.token++; if(P.done) P.done(); P.el.pause(); clearPlaying(); setPlayAll(false); }
+function setPlayAll(on){ const b=$("#playall"); if(!b) return; b.classList.toggle("stop", on); b.textContent = on ? "Dừng lại" : "Đọc cả bảng"; }
+document.querySelectorAll(".speed button").forEach(b=>{
+  b.setAttribute("aria-pressed", String(parseFloat(b.dataset.rate)===P.rate));
+  b.addEventListener("click", ()=>{
+    P.rate = parseFloat(b.dataset.rate); store("py-rate2", P.rate);
+    document.querySelectorAll(".speed button").forEach(x=>x.setAttribute("aria-pressed", String(x===b)));
+  });
+});
+
+/* ---------- Popup with 4 tones ---------- */
+const playIcon = `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8l6 4-6 4z" fill="currentColor"/></svg>`;
+let popAnchor = null;
+function openPop(anchor, {title, form, note, base, show}){
+  const pop = $("#pop");
+  document.querySelectorAll(".sel").forEach(x=>x.classList.remove("sel"));
+  anchor.classList.add("sel"); popAnchor = anchor;
+  $("#pBig").textContent = title;
+  $("#pForm").textContent = form || "";
+  $("#pNote").textContent = note || ""; $("#pNote").hidden = !note;
+  $("#pTones").innerHTML = [1,2,3,4].map(t=>{
+    const key = keyOf(base)+t, ok = !!AUD[key];
+    return `<button class="tbtn" data-tkey="${key}" ${ok?"":"disabled"} aria-label="${esc(mark(show,t))}"><span class="pyt t${t}">${esc(mark(show,t))}</span>${playIcon}</button>`;
+  }).join("");
+  pop.hidden = false;
+  placePop();
+}
+function placePop(){
+  const pop = $("#pop"); if(pop.hidden || !popAnchor) return;
+  if(innerWidth < 600){ pop.classList.add("sheet"); return; }
+  pop.classList.remove("sheet");
+  const r = popAnchor.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+  let left = r.right + 10, top = r.top - 6;
+  if(left + w > innerWidth - 10) left = r.left - w - 10;
+  if(left < 10){ left = Math.min(Math.max(10, r.left), innerWidth - w - 10); top = r.bottom + 8; }
+  if(top + h > innerHeight - 10) top = Math.max(10, innerHeight - h - 10);
+  pop.style.left = (left + scrollX) + "px"; pop.style.top = (top + scrollY) + "px";
+}
+function closePop(){ $("#pop").hidden = true; document.querySelectorAll(".sel").forEach(x=>x.classList.remove("sel")); popAnchor=null; }
+$("#pX").addEventListener("click", closePop);
+addEventListener("keydown", e=>{ if(e.key==="Escape") closePop(); });
+addEventListener("resize", placePop);
+document.addEventListener("pointerdown", e=>{
+  const pop=$("#pop"); if(pop.hidden) return;
+  if(!pop.contains(e.target) && !e.target.closest("[data-pop]")) closePop();
+});
+$("#pAll").addEventListener("click", ()=>{
+  const btns = [...document.querySelectorAll("#pTones .tbtn:not([disabled])")];
+  playSeq(btns.map(b=>[b.dataset.tkey,b]), 250);
+});
+
+/* ---------- Views ---------- */
+function keyHTML(label, read, t, showRead){
+  return `<button class="key" style="${tint(t)}" data-pop="1" data-label="${esc(label)}" data-read="${esc(read)}">
+    <span class="py">${esc(label)}</span>${showRead?`<span class="sub">${esc(read)}</span>`:""}</button>`;
+}
+function tableView(title, desc, groups, showRead){
+  return `<div class="intro"><h2>${title}</h2><p>${desc}</p><button class="playall" id="playall">Đọc cả bảng</button></div>` +
+    groups.map(g=>`<section class="group" style="${tint(g.tint)}"><h3><i></i>${g.name}</h3>
+      <div class="grid">${g.items.map(([p,r])=>keyHTML(p,r,g.tint,showRead && p!==r)).join("")}</div></section>`).join("");
+}
+function chartView(){
+  let rows = "";
+  CH_FIN.forEach((grp,gi)=>grp.forEach((fin,fi)=>{
+    rows += `<tr class="${gi>0&&fi===0?"gap":""}"><th>${fin}</th>` + CH_INI.map(ini=>{
+      const s = join(ini, fin);
+      if(!s || BAD.has(s) || !has(s)) return `<td></td>`;
+      return `<td><button data-pop="1" data-syl="${esc(s)}" data-ini="${ini}" data-fin="${esc(fin)}">${esc(s)}</button></td>`;
+    }).join("") + `</tr>`;
+  }));
+  return `<div class="intro"><h2>Bảng ghép vần</h2><p>Hàng là vận mẫu, cột là thanh mẫu. Bấm vào một ô để nghe và xem cả 4 thanh.</p></div>
+  <div class="chartwrap" id="chartwrap"><table class="chart"><thead><tr><th></th>${CH_INI.map(i=>`<th>${i||"–"}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+const contour = {1:"M8 12 H56", 2:"M8 40 Q30 34 56 10", 3:"M8 22 Q24 46 34 44 Q46 40 56 14", 4:"M8 8 Q30 16 56 44"};
+function tonesView(){
+  const info = [
+    [1,"Thanh 1 (ˉ)","Giọng cao, đều và kéo dài, như hát một nốt."],
+    [2,"Thanh 2 (ˊ)","Đi từ giữa lên cao, giống dấu sắc khi hỏi “hả?”."],
+    [3,"Thanh 3 (ˇ)","Hạ xuống thấp rồi vòng lên, gần giống dấu hỏi."],
+    [4,"Thanh 4 (ˋ)","Từ cao rơi mạnh xuống, dứt khoát như ra lệnh."]
+  ];
+  return `<div class="intro"><h2>Bốn thanh điệu</h2><p>Mỗi hàng là một âm với 4 thanh. Bấm từng thẻ, hoặc bấm “Đọc cả 4” để nghe lên xuống liền nhau.</p></div>
+  <div class="legend">${info.map(([n,b,s])=>`<div class="tone"><svg viewBox="0 0 64 52" aria-hidden="true"><path d="M4 4H60M4 48H60" stroke="var(--line)" stroke-width="2" stroke-dasharray="3 4"/><path d="${contour[n]}" fill="none" stroke="var(--t${n})" stroke-width="5" stroke-linecap="round"/></svg><div><b class="t${n}">${b}</b><span>${s}</span></div></div>`).join("")}</div>
+  ${TONES.map(([s,chars],r)=>`<div class="trow"><div class="lab">${s}</div>
+    ${[1,2,3,4].map(t=>`<button class="key" style="${tint(t)}" data-key="${keyOf(s)+t}"><span class="py t${t}">${mark(s,t)}</span><span class="han">${chars[t-1]}</span></button>`).join("")}
+    <button class="all" data-row="${r}">Đọc<br>cả 4</button></div>`).join("")}`;
+}
+function spellView(){
+  return `<div class="intro"><h2>Ghép vần</h2><p>Bấm vào một dòng: mèo đọc thanh mẫu, rồi vận mẫu, rồi đọc cả âm ghép. Con đọc theo từng bước nhé.</p></div>
+  <p class="note">Mẹo nhỏ: ü gặp j, q, x thì bỏ hai chấm, viết thành u (j + ü → ju), nhưng vẫn đọc là ü.</p>
+  <div class="spells">${SPELL.map(([a,b,p,c,m],i)=>`<button class="spell" data-spell="${i}" aria-label="${a} cộng ${b} thành ${p}">
+    <span class="p">${a}</span><span class="op">+</span><span class="p f">${b}</span><span class="op">→</span>
+    <span class="res"><span class="py t${unmark(p).tone}">${p}</span><small><b>${c}</b> ${m}</small></span></button>`).join("")}</div>`;
+}
+
+/* ---------- Quiz ---------- */
+const Q = { mode:null, i:0, score:0, res:[], cur:null, locked:false };
+const ROUND = 10;
+let CHART_SYL = null;
+function chartSyllables(){
+  if(CHART_SYL) return CHART_SYL;
+  const set = new Set();
+  CH_FIN.flat().forEach(f=>CH_INI.forEach(i=>{ const s=join(i,f); if(s && !BAD.has(s) && [1,2,3,4].every(t=>AUD[keyOf(s)+t])) set.add(s); }));
+  return CHART_SYL = [...set];
+}
+function quizView(){
+  if(!Q.mode) return `<div class="quiz">
+    <div style="width:110px;margin:0 auto">${catSVG({size:110})}</div>
+    <h2 style="margin:6px 0 0">Mèo đọc, con chọn!</h2>
+    <p class="hint">Mỗi lượt có ${ROUND} câu. Nghe thật kỹ rồi bấm đáp án đúng.</p>
+    <div class="modes">
+      <button class="mode" style="${tint(3)}" data-mode="tone"><b>Nghe thanh điệu</b><span>mā, má, mǎ hay mà?</span></button>
+      <button class="mode" style="${tint(1)}" data-mode="sound"><b>Nghe âm</b><span>thanh mẫu, vận mẫu, âm chỉnh thể</span></button>
+    </div></div>`;
+  if(Q.i>=ROUND){
+    const best = Math.max(Q.score, +(store("py-best-"+Q.mode)||0)); store("py-best-"+Q.mode, best);
+    const stars = Q.score>=9?3:Q.score>=6?2:Q.score>=3?1:0;
+    return `<div class="quiz end">
+      <div style="width:120px;margin:0 auto">${catSVG({size:120, mood: stars>=2?"happy":"normal"})}</div>
+      <div class="stars" aria-label="${stars} sao">${"⭐".repeat(stars)}${"☆".repeat(3-stars)}</div>
+      <h2>Con đúng ${Q.score}/${ROUND} câu!</h2>
+      <p>${stars===3?"Giỏi quá! Tai con thính như tai mèo luôn.":stars===2?"Rất tốt! Luyện thêm chút nữa là được 3 sao.":"Không sao, nghe thêm vài lượt là quen ngay."} Kỷ lục: ${best}/${ROUND}.</p>
+      <div class="btns"><button data-again="1">Chơi lại</button><button class="alt" data-mode="">Đổi kiểu luyện</button></div></div>`;
+  }
+  const q = Q.cur;
+  return `<div class="quiz">
+    <div class="qtop"><span>Câu ${Q.i+1}/${ROUND}</span><span class="dots">${Array.from({length:ROUND},(_,k)=>`<i class="${Q.res[k]===true?"ok":Q.res[k]===false?"bad":k===Q.i?"now":""}"></i>`).join("")}</span></div>
+    <button class="listen" id="listen" aria-label="Nghe lại">${catSVG({size:110, mood:Q.locked?(q.ok?"happy":"sad"):"normal"})}</button>
+    <p class="hint">Bấm vào mèo để nghe lại</p>
+    <div class="opts">${q.opts.map((o,k)=>{
+      let cls = "key opt"; if(Q.locked){ if(k===q.ans) cls+=" right"; else if(k===q.pick) cls+=" wrong"; }
+      return `<button class="${cls}" data-opt="${k}" ${Q.locked?"disabled":""}><span class="py ${Q.mode==="tone"?"t"+(k+1):""}">${esc(o)}</span></button>`;}).join("")}</div>
+    <div class="feedback ${Q.locked?(q.ok?"ok":"bad"):""}">${Q.locked?(q.ok?"Đúng rồi! Giỏi quá 🎉":"Chưa đúng, đáp án là "+esc(q.opts[q.ans])):""}</div>
+    ${Q.locked?`<button class="next" id="next">${Q.i+1>=ROUND?"Xem kết quả":"Câu tiếp theo"}</button>`:""}
+  </div>`;
+}
+function makeQuestion(){
+  if(Q.mode==="tone"){
+    const s = rand(chartSyllables()), t = 1+Math.floor(Math.random()*4);
+    return { opts:[1,2,3,4].map(n=>mark(s,n)), ans:t-1, key:keyOf(s)+t };
+  }
+  const pools = [INITIALS, FINALS, WHOLE].map(gs=>gs.flatMap(g=>g.items));
+  const pool = rand(pools), right = rand(pool);
+  const opts = shuffle([right, ...shuffle(pool.filter(x=>x[1]!==right[1])).slice(0,3)]);
+  return { opts:opts.map(x=>x[0]), ans:opts.indexOf(right), key:keyOf(right[1])+"1" };
+}
+function startQuiz(mode){ Q.mode=mode; Q.i=0; Q.score=0; Q.res=[]; nextQ(); }
+function nextQ(){ Q.locked=false; if(Q.i<ROUND) Q.cur = makeQuestion(); render(); if(Q.i<ROUND) playQ(); }
+function playQ(){ play(Q.cur.key, $("#listen")); }
+
+/* ---------- Router & render ---------- */
+const TABS = [["thanh-mau","Thanh mẫu"],["van-mau","Vận mẫu"],["chinh-the","Âm tiết chỉnh thể"],["bang-ghep","Bảng ghép vần"],["thanh-dieu","Thanh điệu"],["ghep-van","Ghép vần"],["luyen-nghe","Luyện nghe 🎧"]];
+function current(){ const h=location.hash.slice(1); return TABS.some(t=>t[0]===h) ? h : TABS[0][0]; }
+function render(){
+  const tab = current();
+  $("#tabs").innerHTML = TABS.map(([id,l])=>`<button role="tab" aria-selected="${id===tab}" data-tab="${id}">${l}</button>`).join("");
+  const v = $("#view");
+  if(tab==="thanh-mau") v.innerHTML = tableView("23 thanh mẫu", "Bấm vào chữ để nghe cách đọc, rồi chọn từng thanh để luyện. Chữ nhỏ bên dưới là cách thầy cô hay đọc.", INITIALS, true);
+  else if(tab==="van-mau") v.innerHTML = tableView("24 vận mẫu", "Học 6 vận mẫu đơn trước rồi mới sang vần kép. Bấm vào vần để nghe và luyện 4 thanh.", FINALS, false);
+  else if(tab==="chinh-the") v.innerHTML = tableView("16 âm tiết chỉnh thể", "Các âm này đọc luôn cả âm, không đánh vần ghép.", WHOLE, false);
+  else if(tab==="bang-ghep") v.innerHTML = chartView();
+  else if(tab==="thanh-dieu") v.innerHTML = tonesView();
+  else if(tab==="ghep-van") v.innerHTML = spellView();
+  else v.innerHTML = quizView();
+  const cw = $("#chartwrap"); if(cw) cw.addEventListener("scroll", closePop, {passive:true});
+}
+addEventListener("hashchange", ()=>{ stopAll(); closePop(); render(); });
+
+document.addEventListener("click", async e=>{
+  const t = e.target.closest("button"); if(!t) return;
+  if(t.dataset.tab){ if(location.hash.slice(1)!==t.dataset.tab) location.hash = t.dataset.tab; return; }
+  if(t.dataset.tkey){ play(t.dataset.tkey, t); return; }
+  if(t.dataset.syl){
+    const s=t.dataset.syl, ini=t.dataset.ini, fin=t.dataset.fin;
+    openPop(t, { title:s, form: ini ? `${ini} + ${fin}` : (s!==fin ? `${fin} → ${s}` : ""), base:s, show:s,
+      note: ini && "jqx".includes(ini) && fin[0]==="ü" ? "ü gặp j, q, x thì bỏ hai chấm" : "" });
+    play(keyOf(s)+"1", t); return;
+  }
+  if(t.dataset.read){
+    const label=t.dataset.label, read=t.dataset.read;
+    let note="", base=read, show=label;
+    const isIni = INITIALS.some(g=>g.items.some(x=>x[0]===label));
+    if(isIni){ show=read; note=`Thanh mẫu ${label} đọc là “${read}”.`; }
+    else if(label==="ong"){ show="hong"; note="ong không đứng một mình, nghe qua âm ghép h + ong."; }
+    else if(read!==label){ note=`Khi đứng một mình viết là “${read}”.`; show=label; }
+    openPop(t, { title:label, form: isIni ? `→ ${read}` : "", note, base, show });
+    play(keyOf(read)+"1", t); return;
+  }
+  if(t.dataset.key){ play(t.dataset.key, t); return; }
+  if(t.id==="playall"){
+    if(t.classList.contains("stop")){ stopAll(); return; }
+    closePop();
+    const keys = [...document.querySelectorAll("#view .key")];
+    setPlayAll(true);
+    const ok = await playSeq(keys.map(k=>[keyOf(k.dataset.read)+"1",k,()=>k.scrollIntoView({block:"nearest",behavior:"smooth"})]), 450);
+    if(ok) setPlayAll(false);
+    return;
+  }
+  if(t.dataset.row!==undefined){
+    const keys = [...t.parentElement.querySelectorAll(".key")];
+    playSeq(keys.map(k=>[k.dataset.key,k]), 250); return;
+  }
+  if(t.dataset.spell!==undefined){
+    const [a,b,p] = SPELL[+t.dataset.spell], parts = t.querySelectorAll(".p"), res = t.querySelector(".res");
+    const on = el=>()=>{ t.querySelectorAll(".on").forEach(x=>x.classList.remove("on")); el.classList.add("on"); };
+    await playSeq([[keyOf(READ[a])+"1",null,on(parts[0])],[keyOf(READ[b])+"1",null,on(parts[1])],[unmark(p).key,null,on(res)]], 350);
+    t.querySelectorAll(".on").forEach(x=>x.classList.remove("on"));
+    return;
+  }
+  if(t.dataset.mode!==undefined){ if(t.dataset.mode) startQuiz(t.dataset.mode); else { Q.mode=null; render(); } return; }
+  if(t.dataset.again){ startQuiz(Q.mode); return; }
+  if(t.id==="listen"){ playQ(); return; }
+  if(t.dataset.opt!==undefined && !Q.locked){
+    const k = +t.dataset.opt, q = Q.cur;
+    q.pick=k; q.ok = k===q.ans; Q.locked=true; Q.res[Q.i]=q.ok; if(q.ok) Q.score++;
+    render(); if(!q.ok) setTimeout(playQ, 250);
+    return;
+  }
+  if(t.id==="next"){ Q.i++; nextQ(); }
+});
+render();
+</script>
+</body>
+</html>
